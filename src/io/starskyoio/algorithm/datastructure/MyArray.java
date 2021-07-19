@@ -2,6 +2,9 @@ package io.starskyoio.algorithm.datastructure;
 
 import java.util.Arrays;
 
+/**
+ * ArrayList实现
+ */
 public class MyArray {
     private int[] array;
     private int size;
