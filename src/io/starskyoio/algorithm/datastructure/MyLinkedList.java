@@ -26,7 +26,29 @@ public class MyLinkedList {
      * @param index
      */
     public void insert(int element, int index) {
-
+        if (index < 0 || index > size) {
+            throw new ArrayIndexOutOfBoundsException("超出链表范围：" + index);
+        }
+        Node insertNode = new Node(element);
+        if (size == 0) {
+            //链表为空
+            head = insertNode;
+            tail = insertNode;
+        } else if (index == 0) {
+            //链表头插入
+            insertNode.next = head;
+            head = insertNode;
+        } else if (size == index) {
+            //链表尾插入
+            tail.next = insertNode;
+            tail = insertNode;
+        } else {
+            //中间插入
+            Node prevNode = get(index - 1);
+            insertNode.next = prevNode.next;
+            prevNode.next = insertNode;
+        }
+        size++;
     }
 
     /**
@@ -35,8 +57,26 @@ public class MyLinkedList {
      * @param index
      * @return
      */
-    public int delete(int index) {
-        return 0;
+    public Node delete(int index) {
+        if (index < 0 || index >= size) {
+            throw new ArrayIndexOutOfBoundsException("超出链表范围：" + index);
+        }
+        Node removedNode;
+        if (index == 0) {
+            removedNode = head;
+            head = head.next;
+        } else if (index == size - 1) {
+            removedNode = tail;
+            Node prevNode = get(index - 1);
+            tail = prevNode;
+            tail.next = null;
+        } else {
+            Node prevNode = get(index - 1);
+            removedNode = prevNode.next;
+            prevNode.next = removedNode.next;
+        }
+        size--;
+        return removedNode;
     }
 
     /**
@@ -45,8 +85,31 @@ public class MyLinkedList {
      * @param index
      * @return
      */
-    public int get(int index) {
-        return 0;
+    public Node get(int index) {
+        if (index < 0 || index >= size) {
+            throw new ArrayIndexOutOfBoundsException("超出链表范围：" + index);
+        }
+        Node findNode = head;
+        if(index == 0){
+            return findNode;
+        }
+        int i = 1;
+        while ((findNode = findNode.next) != null) {
+            if (i == index) {
+                break;
+            }
+            i++;
+        }
+        return findNode;
+    }
+
+    public void print() {
+        Node node = head;
+        System.out.print(node.data);
+        while((node = node.next) != null){
+            System.out.print(","+node.data);
+        }
+        System.out.println();
     }
 
     /**
@@ -62,5 +125,28 @@ public class MyLinkedList {
          * 下一个节点指针
          */
         Node next;
+
+        Node(int data) {
+            this.data = data;
+        }
+    }
+
+    public static void main(String[] args) {
+        MyLinkedList list = new MyLinkedList();
+        list.insert(1, 0);
+        list.insert(4, 0);
+        list.insert(5, 0);
+        list.insert(8, 0);
+        list.print();
+        list.insert(2, 1);
+        list.print();
+        list.insert(8, 1);
+        list.print();
+        list.delete(0);
+        list.print();
+        list.delete(4);
+        list.print();
+        list.delete(2);
+        list.print();
     }
 }
